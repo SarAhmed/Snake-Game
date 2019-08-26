@@ -2,18 +2,11 @@ var canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 canvas.width = Math.floor(window.innerWidth / 32) * 32 - 32;
 canvas.height = Math.floor(window.innerHeight / 32) * 32;
-
 const MAX_HEIGHT = canvas.height / 32;
 const MAX_WIDTH = canvas.width / 32;
-
-
-
 const box = 32;
 
-
 //loading images and audio files
-
-
 const foodImg = new Image();
 const dead = new Audio();
 const eat = new Audio();
@@ -34,7 +27,6 @@ let score = 0;
 let dir;
 
 //create the snake
-
 let snake = [];
 snake[0] = {
     x: Math.floor(MAX_WIDTH / 2) * box,
@@ -42,7 +34,6 @@ snake[0] = {
 };
 
 //create the food
-
 let food = {
     x: Math.floor(Math.random() * (MAX_WIDTH)) * box,
     y: Math.floor(Math.random() * (MAX_HEIGHT)) * box
@@ -129,10 +120,6 @@ function draw() {
     ctx.font = "45px Changa one";
     ctx.fillText("SCORE: " + score, 2 * box, 1.6 * box);
 
-
-
-
-
 }
 
 document.addEventListener("keydown", direction);
@@ -161,3 +148,4 @@ function direction(event) {
     }
 }
 let game = setInterval(draw, 100);
+
