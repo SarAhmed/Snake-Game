@@ -1,20 +1,14 @@
-/*
-Created by Sarah Abdelkhalek
-with the assist of Youtube channel : https://www.youtube.com/channel/UC8n8ftV94ZU_DJLOLtrpORA
-*/
-
-
 var canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-canvas.width=Math.floor(window.innerWidth/32)*32-32;
-canvas.height=Math.floor(window.innerHeight/32)*32;
+canvas.width = Math.floor(window.innerWidth / 32) * 32 - 32;
+canvas.height = Math.floor(window.innerHeight / 32) * 32;
 
-const MAX_HEIGHT=canvas.height/32;
-const MAX_WIDTH=canvas.width/32;
+const MAX_HEIGHT = canvas.height / 32;
+const MAX_WIDTH = canvas.width / 32;
 
 
 
-const box=32;
+const box = 32;
 
 
 //loading images and audio files
@@ -42,115 +36,128 @@ let dir;
 //create the snake
 
 let snake = [];
-snake[0] = {x: Math.floor(MAX_WIDTH/2)*box, y: Math.floor(MAX_HEIGHT/2)*box};
+snake[0] = {
+    x: Math.floor(MAX_WIDTH / 2) * box,
+    y: Math.floor(MAX_HEIGHT / 2) * box
+};
 
 //create the food
 
-let food ={x:Math.floor(Math.random()*(MAX_WIDTH))*box,y:Math.floor(Math.random()*(MAX_HEIGHT))*box};
+let food = {
+    x: Math.floor(Math.random() * (MAX_WIDTH)) * box,
+    y: Math.floor(Math.random() * (MAX_HEIGHT)) * box
+};
 
 //draw everything on the canvas
-var p=10;
-function drawBoard(){
-    for (let i = 32; i <MAX_WIDTH*box;i += 32) {
-        ctx.moveTo(i, MAX_HEIGHT*box);
-        ctx.lineTo(i,0);
+var p = 10;
+
+function drawBoard() {
+    for (let i = 32; i < MAX_WIDTH * box; i += 32) {
+        ctx.moveTo(i, MAX_HEIGHT * box);
+        ctx.lineTo(i, 0);
     }
-    for (let i = 32; i <MAX_HEIGHT*box;i += 32) {
+    for (let i = 32; i < MAX_HEIGHT * box; i += 32) {
         ctx.moveTo(0, i);
-        ctx.lineTo(MAX_WIDTH*box,i);
+        ctx.lineTo(MAX_WIDTH * box, i);
     }
 
- 
+
     ctx.strokeStyle = "gray";
     ctx.stroke();
 }
 
 
-function draw(){
-   
-    canvas.width=Math.floor(window.innerWidth/32)*32-32;
-    canvas.height=Math.floor(window.innerHeight/32)*32;
+function draw() {
+
+    canvas.width = Math.floor(window.innerWidth / 32) * 32 - 32;
+    canvas.height = Math.floor(window.innerHeight / 32) * 32;
     drawBoard();
 
-    for(let i=0;i<snake.length;i++){
-        ctx.fillStyle =(i==0)?"#33ff00":"#66cc33";
-        ctx.fillRect(snake[i].x,snake[i].y,box,box);
+    for (let i = 0; i < snake.length; i++) {
+        ctx.fillStyle = (i == 0) ? "#33ff00" : "#66cc33";
+        ctx.fillRect(snake[i].x, snake[i].y, box, box);
 
-        ctx.strokeStyle="black";
-        ctx.strokeRect(snake[i].x,snake[i].y,box,box);
+        ctx.strokeStyle = "black";
+        ctx.strokeRect(snake[i].x, snake[i].y, box, box);
     }
 
-    ctx.drawImage(foodImg,food.x,food.y);
+    ctx.drawImage(foodImg, food.x, food.y);
 
-    var snakeX=snake[0].x;
-    var snakeY=snake[0].y;
-    if(dir=="up")snakeY-=box;
-    else if(dir=="down")snakeY+=box;
-    else if(dir=="right")snakeX+=box;
-    else if(dir=="left")snakeX-=box;
-    
+    var snakeX = snake[0].x;
+    var snakeY = snake[0].y;
+    if (dir == "up") snakeY -= box;
+    else if (dir == "down") snakeY += box;
+    else if (dir == "right") snakeX += box;
+    else if (dir == "left") snakeX -= box;
 
-    if(snakeX==food.x && snakeY==food.y){
+
+    if (snakeX == food.x && snakeY == food.y) {
 
         score++;
         eat.play();
-        food = {x:Math.floor(Math.random()*(MAX_WIDTH))*box,y:Math.floor(Math.random()*(MAX_HEIGHT))*box};
-    }else{
+        food = {
+            x: Math.floor(Math.random() * (MAX_WIDTH)) * box,
+            y: Math.floor(Math.random() * (MAX_HEIGHT)) * box
+        };
+    } else {
         snake.pop();
     }
 
-    if(snakeX<0 ||snakeX>=MAX_WIDTH*box ||snakeY<0 || snakeY>=MAX_HEIGHT*box) {
+    if (snakeX < 0 || snakeX >= MAX_WIDTH * box || snakeY < 0 || snakeY >= MAX_HEIGHT * box) {
         clearInterval(game);
         ctx.fillStyle = "red";
         ctx.font = "230px Changa one";
-        ctx.fillText("GAME OVER!",25,Math.floor(MAX_HEIGHT/2)*box);
+        ctx.fillText("GAME OVER!", 25, Math.floor(MAX_HEIGHT / 2) * box);
         dead.play();
     }
-    for(let i=0;i<snake.length;i++){
-        if((snake[i].x==snakeX && snake[i].y==snakeY )){
+    for (let i = 0; i < snake.length; i++) {
+        if ((snake[i].x == snakeX && snake[i].y == snakeY)) {
             clearInterval(game);
             ctx.fillStyle = "red";
             ctx.font = "230px Changa one";
-            ctx.fillText("GAME OVER!",25,Math.floor(MAX_HEIGHT/2)*box);
+            ctx.fillText("GAME OVER!", 25, Math.floor(MAX_HEIGHT / 2) * box);
             dead.play();
         }
     }
-    let newHead={x:snakeX,y:snakeY};
+    let newHead = {
+        x: snakeX,
+        y: snakeY
+    };
     snake.unshift(newHead);
 
     ctx.fillStyle = "white";
     ctx.font = "45px Changa one";
-    ctx.fillText("SCORE: "+score,2*box,1.6*box);
+    ctx.fillText("SCORE: " + score, 2 * box, 1.6 * box);
 
 
-   
+
 
 
 }
 
-document.addEventListener("keydown",direction);
+document.addEventListener("keydown", direction);
 
-function direction(event){
+function direction(event) {
     let key = event.code;
 
-    if(key == "Escape"){
+    if (key == "Escape") {
         clearInterval(game);
         ctx.fillStyle = "red";
         ctx.font = "230px Changa one";
-        ctx.fillText("GAME OVER!",25,Math.floor(MAX_HEIGHT/2)*box);
+        ctx.fillText("GAME OVER!", 25, Math.floor(MAX_HEIGHT / 2) * box);
         dead.play();
-    }else if(key == "ArrowUp" && dir !="down"){
+    } else if (key == "ArrowUp" && dir != "down") {
         dir = "up";
         up.play();
-    }else if(key == "ArrowDown" && dir != "up"){
+    } else if (key == "ArrowDown" && dir != "up") {
         dir = "down";
         down.play();
-    }else if(key == "ArrowLeft" && dir != "right"){
+    } else if (key == "ArrowLeft" && dir != "right") {
         dir = "left";
         left.play();
-    }else if(key == "ArrowRight" && dir != "left"){
+    } else if (key == "ArrowRight" && dir != "left") {
         dir = "right";
         right.play();
     }
 }
-let game = setInterval(draw,100);
+let game = setInterval(draw, 100);
